@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>小亦君-新冠肺炎疫情地图</title>
+<link rel="shortcut icon" href="head.jpg" />
+<script type="text/javascript">
+        var data ;
+ </script>
+ <!-- 
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.7.0/echarts.min.js"></script>
+<script src="http://cdn.zaixianke.com/china.js"></script>
+<script src="http://cdn.zaixianke.com/world.js"></script>
+-->
+<script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+<script src="jquery/3.4.1/jquery.min.js"></script>
+<script src="echarts/4.7.0/echarts.min.js"></script>
+<script src="js/china.js"></script>
+<script src="js/world.js"></script>
+</head>
+<body>
+<div id="increase" style="border-radius:10px;background:rgba(123,56,65,0.6);width:100%;margin:10px auto;font-size:24px;color:white;font-weight:bolder;padding-top: 30px;" align="center">
+    <table border=0 style="text-align: center;width:40%">
+        <tr>
+            <td>新增病例地区</td>
+            <td>今日新增人数</td>
+        </tr>
+        <tr v-for="r in rows">
+            <td>{{r.name}}</td>
+            <td  style="color:rgb(120,240,233)">{{r.value}}</td>
+        </tr>
+    </table>
+</div>
+<div id="main" style="width: 100%;height:600px;"></div> <br>
+<div style="text-align:center;width:100%;height:30px;background:rgb(133,195,100);margin:10px auto;line-height:30px;border-radius:10px;font-weight:bolder">
+<a style="text-decoration:none;color:white;margin:0px 10px;" class="control" align="center" href="javascript:updateMap(0)">国内累计</a>
+<a style="text-decoration:none;color:white;margin:0px 10px;" class="control" align="center" href="javascript:updateMap(1)">国内新增</a>
+<a style="text-decoration:none;color:white;margin:0px 10px;" class="control" align="center" href="javascript:updateMap(2)">全球累计</a>
+<a style="text-decoration:none;color:white;margin:0px 10px;" class="control" align="center" href="javascript:updateMap(3)">全球新增</a>
+</div>
+
+<script src="js/control.js"></script>
+<script type="text/javascript">
+	// 服务器网址‘/data’--> 在DataServlet里面
+	$(function() {
+		$.getJSON("data",null,function(data2) {
+			data=data2;
+			updateMap(0);
+			
+			var re=[];
+	    	for(var i=0;i<data.today.length;i++){
+				if(data.today[i].value>0){
+					re.push(data.today[i]);
+				}
+			}
+	    	console.log(re);
+	    	if(re.length<=0){
+	    		re.push({name:"今日无新增",value:0});
+	    	}
+	        var v = new Vue({
+	            el: '#increase',
+	            data: {
+	                rows: re
+	            }
+	        }) 
+		});
+	});
+
+</script>
+
+</body>
+</html>
